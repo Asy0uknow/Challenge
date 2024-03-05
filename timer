@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타이머 </title>
+</head>
+<body>
+    <p>타이머</p>
+    <div id="output"></div>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <button id="reset">reset</button>
+    <script>
+        var runflag = 0;
+        var hour = prompt('시');
+        var min = prompt('분');
+        var sec = prompt('초');
+        var result = hour + '|' + min + '|' + sec;
+        var outputDiv = document.getElementById('output');
+        outputDiv.textContent = result;
+        var endflag = 0;
+        var timerInterval;
+
+        function run() {
+            if (endflag == 1) {
+                clearInterval(timerInterval); // 타이머를 중지합니다.
+                return;
+            }
+            sec -= 1;
+            if (sec == -1) {
+                sec += 60;
+                min -= 1;
+                if (min == -1) {
+                    min += 60
+                    hour -= 1;
+                    if (hour == -1) {
+                        endflag = 1;
+                        clearInterval(timerInterval); // 타이머를 중지합니다.
+                        return;
+                    }
+                }
+            }
+            result = hour + '|' + min + '|' + sec;
+            outputDiv.textContent = result;
+        }
+
+        function start() {
+            if (runflag == 0) {
+                timerInterval = setInterval(run, 1000); // 타이머를 설정합니다.
+                runflag = 1;
+            }
+        }
+
+        function stop() {
+            clearInterval(timerInterval); // 타이머를 중지합니다.
+            runflag = 0;
+        }
+
+        function reset(){
+            runflag = 0;
+            hour=0;
+            min=0;
+            sec=0;
+            result = hour + '|' + min + '|' + sec;
+            outputDiv.textContent = result;
+            hour = prompt('시');
+            min = prompt('분');
+            sec = prompt('초');
+            result = hour + '|' + min + '|' + sec;
+            outputDiv.textContent = result;
+            start();
+        }
+        document.getElementById("start").addEventListener('click', start);
+        document.getElementById("stop").addEventListener('click', stop);
+        document.getElementById("reset").addEventListener('click', reset);
+    </script>
+</body>
+</html>
